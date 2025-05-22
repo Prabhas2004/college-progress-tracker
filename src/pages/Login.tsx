@@ -17,6 +17,16 @@ const departmentCredentials = {
   admin: { id: 'admin', password: 'password' }, // Keep admin for testing
 };
 
+// Department display names
+const departmentNames = {
+  cse: "Computer Science Engineering",
+  ds: "Data Science",
+  aiml: "AI & ML",
+  civil: "Civil Engineering",
+  ise: "Information Science Engineering",
+  admin: "Administrator"
+};
+
 const Login = () => {
   const [departmentId, setDepartmentId] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +48,11 @@ const Login = () => {
     // Simulating API call
     setTimeout(() => {
       if (validDepartment) {
-        toast.success(`${selectedDepartment.toUpperCase()} Department login successful!`);
+        // Store department info in localStorage
+        localStorage.setItem('currentDepartment', selectedDepartment);
+        localStorage.setItem('departmentName', departmentNames[selectedDepartment as keyof typeof departmentNames]);
+        
+        toast.success(`${departmentNames[selectedDepartment as keyof typeof departmentNames]} login successful!`);
         navigate('/dashboard');
       } else {
         toast.error('Invalid department or credentials');
