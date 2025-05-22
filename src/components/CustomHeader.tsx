@@ -15,7 +15,7 @@ const CustomHeader = ({ onLogout }: CustomHeaderProps) => {
     <div className="relative">
       <Header onLogout={onLogout} />
       {departmentName && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
+        <div className="absolute top-0 right-4 transform mt-4">
           <DepartmentBadge />
         </div>
       )}
