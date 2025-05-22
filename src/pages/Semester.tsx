@@ -4,18 +4,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CustomHeader from '@/components/CustomHeader';
+import Header from '@/components/Header';
 import StudentCard from '@/components/StudentCard';
 import SemesterSelector from '@/components/SemesterSelector';
 import { generateMockStudents } from '@/lib/mock-data';
-import { useAuth } from '@/App';
 
 const Semester = () => {
   const { semId } = useParams<{ semId: string }>();
   const [searchQuery, setSearchQuery] = useState('');
   const [students, setStudents] = useState<any[]>([]);
   const navigate = useNavigate();
-  const { currentDepartment } = useAuth();
 
   useEffect(() => {
     // Generate mock students based on semester
@@ -30,9 +28,6 @@ const Semester = () => {
   );
 
   const handleLogout = () => {
-    // Clear department info on logout
-    localStorage.removeItem('currentDepartment');
-    localStorage.removeItem('departmentName');
     navigate('/');
   };
 
@@ -58,7 +53,7 @@ const Semester = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <CustomHeader onLogout={handleLogout} />
+      <Header onLogout={handleLogout} />
       
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6">

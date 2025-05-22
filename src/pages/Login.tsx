@@ -5,32 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-// Define department credentials
-const departmentCredentials = {
-  cse: { id: 'cse', password: 'csepass' },
-  ds: { id: 'ds', password: 'dspass' },
-  aiml: { id: 'aiml', password: 'aimlpass' },
-  civil: { id: 'civil', password: 'civilpass' },
-  ise: { id: 'ise', password: 'isepass' },
-  admin: { id: 'admin', password: 'password' }, // Keep admin for testing
-};
-
-// Department display names
-const departmentNames = {
-  cse: "Computer Science Engineering",
-  ds: "Data Science",
-  aiml: "AI & ML",
-  civil: "Civil Engineering",
-  ise: "Information Science Engineering",
-  admin: "Administrator"
-};
 
 const Login = () => {
-  const [departmentId, setDepartmentId] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -38,32 +16,22 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Check if the selected department and credentials match
-    const validDepartment = Object.keys(departmentCredentials).find(
-      (dept) => dept === selectedDepartment && 
-      departmentCredentials[dept as keyof typeof departmentCredentials].id === departmentId && 
-      departmentCredentials[dept as keyof typeof departmentCredentials].password === password
-    );
-    
     // Simulating API call
     setTimeout(() => {
-      if (validDepartment) {
-        // Store department info in localStorage
-        localStorage.setItem('currentDepartment', selectedDepartment);
-        localStorage.setItem('departmentName', departmentNames[selectedDepartment as keyof typeof departmentNames]);
-        
-        toast.success(`${departmentNames[selectedDepartment as keyof typeof departmentNames]} login successful!`);
+      // Demo credentials for easy testing
+      if (username === 'admin' && password === 'password') {
+        toast.success('Login successful!');
         navigate('/dashboard');
       } else {
-        toast.error('Invalid department or credentials');
+        toast.error('Invalid credentials. Try admin/password');
       }
       setIsLoading(false);
     }, 1000);
   };
 
   return (
-    <div className="login-container min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="login-card w-full max-w-md">
+    <div className="login-container">
+      <Card className="login-card">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
             <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
@@ -72,48 +40,23 @@ const Login = () => {
               </svg>
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-center">Department Login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Student Analytics</CardTitle>
           <CardDescription className="text-center">
-            Enter your department credentials to access the dashboard
+            Enter your credentials to access the dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <label htmlFor="department" className="text-sm font-medium">
-                  Department
-                </label>
-                <Select 
-                  value={selectedDepartment} 
-                  onValueChange={setSelectedDepartment}
-                  required
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Departments</SelectLabel>
-                      <SelectItem value="cse">Computer Science (CSE)</SelectItem>
-                      <SelectItem value="ds">Data Science (DS)</SelectItem>
-                      <SelectItem value="aiml">AI & ML (AIML)</SelectItem>
-                      <SelectItem value="civil">Civil Engineering</SelectItem>
-                      <SelectItem value="ise">Information Science (ISE)</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <label htmlFor="departmentId" className="text-sm font-medium">
-                  Department ID
+                <label htmlFor="username" className="text-sm font-medium">
+                  Username
                 </label>
                 <Input
-                  id="departmentId"
-                  placeholder="Enter department ID"
-                  value={departmentId}
-                  onChange={(e) => setDepartmentId(e.target.value)}
+                  id="username"
+                  placeholder="admin"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   className="border-gray-300"
                 />
@@ -130,7 +73,7 @@ const Login = () => {
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter password"
+                  placeholder="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -159,9 +102,7 @@ const Login = () => {
         </CardContent>
         <CardFooter className="flex flex-col">
           <div className="text-center text-sm text-gray-500 mt-2">
-            <p>Demo credentials for departments:</p>
-            <p>CSE: cse/csepass | DS: ds/dspass | AIML: aiml/aimlpass</p>
-            <p>Civil: civil/civilpass | ISE: ise/isepass | Admin: admin/password</p>
+            <p>Use demo credentials: admin / password</p>
           </div>
         </CardFooter>
       </Card>
