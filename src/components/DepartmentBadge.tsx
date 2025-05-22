@@ -21,7 +21,7 @@ const DepartmentBadge = () => {
   const badgeColor = colors[currentDepartment as keyof typeof colors] || "bg-blue-500 hover:bg-blue-600";
 
   return (
-    <Badge className={`${badgeColor} text-white`}>
+    <Badge className={`${badgeColor} text-white px-3 py-1 text-sm`}>
       {departmentName}
     </Badge>
   );
