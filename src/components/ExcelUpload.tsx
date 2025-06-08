@@ -34,17 +34,23 @@ const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDe
         console.log('Current semester:', currentSemester);
         console.log('Current department:', currentDepartment);
 
-        // Process the Excel data
+        // Process the Excel data with better name handling
         const processedStudents = jsonData.map((row: any, index: number) => {
+          // Handle different possible column names and preserve exact name
+          const studentName = row.Name || row.name || row.StudentName || row['Student Name'] || row.NAME || `Student ${index + 1}`;
+          const studentId = row.ID || row.id || row.StudentID || row['Student ID'] || row.Id || (Date.now() + index);
+          
           const student = {
-            id: row.ID || row.id || Date.now() + index,
-            name: row.Name || row.name || `Student ${index + 1}`,
-            gpa: parseFloat(row.GPA || row.gpa || (Math.random() * 3 + 7).toFixed(1)),
-            attendance: parseInt(row.Attendance || row.attendance || Math.floor(Math.random() * 30 + 70)),
-            improvement: parseFloat(row.Improvement || row.improvement || (Math.random() * 10 - 5).toFixed(1)),
+            id: parseInt(studentId.toString()) || Date.now() + index,
+            name: studentName.toString().trim(), // Ensure it's a string and trim whitespace
+            gpa: parseFloat(row.GPA || row.gpa || row.Gpa || (Math.random() * 3 + 7).toFixed(1)),
+            attendance: parseInt(row.Attendance || row.attendance || row.ATTENDANCE || Math.floor(Math.random() * 30 + 70)),
+            improvement: parseFloat(row.Improvement || row.improvement || row.IMPROVEMENT || (Math.random() * 10 - 5).toFixed(1)),
             semester: currentSemester,
             department: currentDepartment
           };
+          
+          console.log('Original row data:', row);
           console.log('Processed student:', student);
           return student;
         });
