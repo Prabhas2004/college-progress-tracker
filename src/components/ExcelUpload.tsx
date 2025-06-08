@@ -85,7 +85,7 @@ const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDe
         GPA: 8.5,
         Attendance: 95,
         Improvement: 2.3,
-        Semester: 3
+        Semester: parseInt(currentSemester)
       },
       {
         ID: 12346,
@@ -93,7 +93,7 @@ const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDe
         GPA: 7.8,
         Attendance: 87,
         Improvement: -1.2,
-        Semester: 3
+        Semester: parseInt(currentSemester)
       }
     ];
 
@@ -156,36 +156,6 @@ const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDe
       </CardContent>
     </Card>
   );
-
-  function handleUploadClick() {
-    fileInputRef.current?.click();
-  }
-
-  function downloadTemplate() {
-    const templateData = [
-      {
-        ID: 12345,
-        Name: 'John Doe',
-        GPA: 8.5,
-        Attendance: 95,
-        Improvement: 2.3,
-        Semester: parseInt(currentSemester)
-      },
-      {
-        ID: 12346,
-        Name: 'Jane Smith',
-        GPA: 7.8,
-        Attendance: 87,
-        Improvement: -1.2,
-        Semester: parseInt(currentSemester)
-      }
-    ];
-
-    const worksheet = XLSX.utils.json_to_sheet(templateData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
-    XLSX.writeFile(workbook, 'student_template.xlsx');
-  }
 };
 
 export default ExcelUpload;
