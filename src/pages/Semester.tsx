@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Mail, Print } from 'lucide-react';
+import { Upload, Mail, Printer } from 'lucide-react';
 import { toast } from 'sonner';
 import CustomHeader from '@/components/CustomHeader';
 import StudentCard from '@/components/StudentCard';
@@ -190,7 +190,7 @@ const Semester = () => {
               Email Analytics
             </Button>
             <Button onClick={handlePrintSemester} variant="outline" className="flex items-center gap-2">
-              <Print className="w-4 h-4" />
+              <Printer className="w-4 h-4" />
               Print Analytics
             </Button>
             <SemesterSelector onSelectSemester={handleSelectSemester} currentSemester={semId} />
