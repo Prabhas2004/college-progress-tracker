@@ -1,4 +1,3 @@
-
 // Generate mock data for the student analytics dashboard
 
 // Helper function to generate a random number within a range
@@ -29,11 +28,15 @@ const generateName = (): string => {
 };
 
 // Generate a list of students for a semester
-export const generateMockStudents = (semesterId: string): any[] => {
+export const generateMockStudents = (semesterId: string, department?: string): any[] => {
+  // First, check if there are manually added students for this semester and department
+  const storageKey = `students_${department}_sem${semesterId}`;
+  const storedStudents = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  
   const semNumber = parseInt(semesterId);
   const studentCount = randomBetween(30, 50);
   
-  const students = Array.from({ length: studentCount }, (_, i) => {
+  const mockStudents = Array.from({ length: studentCount }, (_, i) => {
     const studentId = (semNumber * 1000) + (i + 1);
     const gpa = 6 + (Math.random() * 4); // GPA between 6.0 and 10.0
     const attendance = randomBetween(70, 98);
@@ -50,7 +53,17 @@ export const generateMockStudents = (semesterId: string): any[] => {
     };
   });
   
-  return students;
+  // Combine stored students with mock students, ensuring no ID conflicts
+  const allStudents = [...storedStudents];
+  const usedIds = new Set(storedStudents.map((s: any) => s.id));
+  
+  mockStudents.forEach(student => {
+    if (!usedIds.has(student.id)) {
+      allStudents.push(student);
+    }
+  });
+  
+  return allStudents;
 };
 
 // Generate subjects for BTech curriculum

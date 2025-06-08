@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus } from 'lucide-react';
 import CustomHeader from '@/components/CustomHeader';
 import StudentCard from '@/components/StudentCard';
 import SemesterSelector from '@/components/SemesterSelector';
@@ -18,10 +20,10 @@ const Semester = () => {
   const { currentDepartment } = useAuth();
 
   useEffect(() => {
-    // Generate mock students based on semester
-    const mockStudents = generateMockStudents(semId || '1');
+    // Generate mock students based on semester and department
+    const mockStudents = generateMockStudents(semId || '1', currentDepartment || undefined);
     setStudents(mockStudents);
-  }, [semId]);
+  }, [semId, currentDepartment]);
 
   const filteredStudents = students.filter(
     student => 
@@ -42,6 +44,10 @@ const Semester = () => {
 
   const handleStudentClick = (studentId: number) => {
     navigate(`/student/${semId}/${studentId}`);
+  };
+
+  const handleAddStudent = () => {
+    navigate('/add-student');
   };
 
   const getTopPerformers = () => {
@@ -66,7 +72,13 @@ const Semester = () => {
             <h1 className="text-2xl font-bold text-gray-800">Semester {semId}</h1>
             <p className="text-gray-600">Total Students: {students.length}</p>
           </div>
-          <SemesterSelector onSelectSemester={handleSelectSemester} currentSemester={semId} />
+          <div className="flex gap-3 items-center">
+            <Button onClick={handleAddStudent} className="flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Add Student
+            </Button>
+            <SemesterSelector onSelectSemester={handleSelectSemester} currentSemester={semId} />
+          </div>
         </div>
         
         <div className="mb-6">

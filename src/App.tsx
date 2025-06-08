@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Semester from "./pages/Semester";
 import StudentDetail from "./pages/StudentDetail";
+import AddStudent from "./pages/AddStudent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -17,27 +18,44 @@ const queryClient = new QueryClient();
 export const AuthContext = createContext<{
   currentDepartment: string | null;
   departmentName: string | null;
+  isAuthenticated: boolean;
 }>({
   currentDepartment: null,
   departmentName: null,
+  isAuthenticated: false,
 });
+
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+  
+  return <>{children}</>;
+};
 
 // Auth Provider Component
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentDepartment, setCurrentDepartment] = useState<string | null>(null);
   const [departmentName, setDepartmentName] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Get department info from localStorage
+    // Check authentication status from localStorage
     const storedDepartment = localStorage.getItem('currentDepartment');
     const storedDepartmentName = localStorage.getItem('departmentName');
     
-    setCurrentDepartment(storedDepartment);
-    setDepartmentName(storedDepartmentName);
+    if (storedDepartment && storedDepartmentName) {
+      setCurrentDepartment(storedDepartment);
+      setDepartmentName(storedDepartmentName);
+      setIsAuthenticated(true);
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentDepartment, departmentName }}>
+    <AuthContext.Provider value={{ currentDepartment, departmentName, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
@@ -55,9 +73,26 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/semester/:semId" element={<Semester />} />
-            <Route path="/student/:semId/:studentId" element={<StudentDetail />} />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/semester/:semId" element={
+              <ProtectedRoute>
+                <Semester />
+              </ProtectedRoute>
+            } />
+            <Route path="/student/:semId/:studentId" element={
+              <ProtectedRoute>
+                <StudentDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/add-student" element={
+              <ProtectedRoute>
+                <AddStudent />
+              </ProtectedRoute>
+            } />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
