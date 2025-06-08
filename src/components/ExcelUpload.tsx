@@ -8,9 +8,10 @@ import * as XLSX from 'xlsx';
 interface ExcelUploadProps {
   onStudentsUploaded: (students: any[]) => void;
   currentDepartment: string;
+  currentSemester?: string;
 }
 
-const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDepartment }) => {
+const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDepartment, currentSemester = '1' }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,23 +30,31 @@ const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDe
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
+        console.log('Excel data parsed:', jsonData);
+        console.log('Current semester:', currentSemester);
+        console.log('Current department:', currentDepartment);
+
         // Process the Excel data
         const processedStudents = jsonData.map((row: any, index: number) => {
-          return {
-            id: row.ID || row.id || 20000 + index + 1,
+          const student = {
+            id: row.ID || row.id || Date.now() + index,
             name: row.Name || row.name || `Student ${index + 1}`,
             gpa: parseFloat(row.GPA || row.gpa || (Math.random() * 3 + 7).toFixed(1)),
             attendance: parseInt(row.Attendance || row.attendance || Math.floor(Math.random() * 30 + 70)),
             improvement: parseFloat(row.Improvement || row.improvement || (Math.random() * 10 - 5).toFixed(1)),
-            semester: row.Semester || row.semester || '1',
+            semester: currentSemester,
             department: currentDepartment
           };
+          console.log('Processed student:', student);
+          return student;
         });
 
         // Store in localStorage
         const existingStudents = JSON.parse(localStorage.getItem('uploadedStudents') || '[]');
         const updatedStudents = [...existingStudents, ...processedStudents];
         localStorage.setItem('uploadedStudents', JSON.stringify(updatedStudents));
+
+        console.log('Updated localStorage with students:', updatedStudents);
 
         onStudentsUploaded(processedStudents);
         toast.success(`Successfully uploaded ${processedStudents.length} students`);
@@ -147,6 +156,36 @@ const ExcelUpload: React.FC<ExcelUploadProps> = ({ onStudentsUploaded, currentDe
       </CardContent>
     </Card>
   );
+
+  function handleUploadClick() {
+    fileInputRef.current?.click();
+  }
+
+  function downloadTemplate() {
+    const templateData = [
+      {
+        ID: 12345,
+        Name: 'John Doe',
+        GPA: 8.5,
+        Attendance: 95,
+        Improvement: 2.3,
+        Semester: parseInt(currentSemester)
+      },
+      {
+        ID: 12346,
+        Name: 'Jane Smith',
+        GPA: 7.8,
+        Attendance: 87,
+        Improvement: -1.2,
+        Semester: parseInt(currentSemester)
+      }
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(templateData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
+    XLSX.writeFile(workbook, 'student_template.xlsx');
+  }
 };
 
 export default ExcelUpload;

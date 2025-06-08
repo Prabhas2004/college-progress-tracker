@@ -63,7 +63,12 @@ const Semester = () => {
   };
 
   const handleStudentsUploaded = (newStudents: any[]) => {
-    setStudents(prevStudents => [...prevStudents, ...newStudents]);
+    console.log('New students uploaded:', newStudents);
+    setStudents(prevStudents => {
+      const updatedStudents = [...prevStudents, ...newStudents];
+      console.log('Updated students state:', updatedStudents);
+      return updatedStudents;
+    });
     setShowUpload(false);
   };
 
@@ -202,6 +207,7 @@ const Semester = () => {
             <ExcelUpload 
               onStudentsUploaded={handleStudentsUploaded}
               currentDepartment={currentDepartment || 'cse'}
+              currentSemester={semId}
             />
           </div>
         )}
