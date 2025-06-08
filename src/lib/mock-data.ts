@@ -79,12 +79,22 @@ export const generateMockStudents = (semesterId: string, department?: string) =>
   
   const names = departmentNames[deptCode as keyof typeof departmentNames] || departmentNames.cse;
   
+  // Get deleted students list
+  const deletedStudents = JSON.parse(localStorage.getItem('deletedStudents') || '[]');
+  
   for (let i = 0; i < 25; i++) {
+    const studentId = baseId + i + 1;
+    
+    // Skip if student is deleted
+    if (deletedStudents.includes(studentId.toString())) {
+      continue;
+    }
+    
     const nameIndex = i % names.length;
     const lastName = lastNames[i % lastNames.length];
     
     students.push({
-      id: baseId + i + 1, // Consistent ID generation
+      id: studentId,
       name: `${names[nameIndex]} ${lastName}`,
       gpa: parseFloat((Math.random() * 3 + 7).toFixed(1)),
       attendance: Math.floor(Math.random() * 30 + 70),
@@ -111,6 +121,46 @@ const getDepartmentOffset = (department: string): number => {
 };
 
 export const generateStudentDetail = (semesterId: string, studentId: string) => {
+  // Check if student exists in uploaded students first
+  const uploadedStudents = JSON.parse(localStorage.getItem('uploadedStudents') || '[]');
+  const uploadedStudent = uploadedStudents.find((student: any) => student.id.toString() === studentId);
+  
+  if (uploadedStudent) {
+    // Return detailed data for uploaded student
+    return {
+      ...uploadedStudent,
+      semesterHistory: Array.from({ length: parseInt(semesterId) }, (_, i) => {
+        const semNum = i + 1;
+        const gpa = parseFloat((Math.random() * 3 + 6.5).toFixed(1));
+        return {
+          name: `Semester ${semNum}`,
+          gpa: gpa,
+          attendance: Math.floor(Math.random() * 20 + 75),
+          rank: Math.floor(Math.random() * 50 + 1),
+          totalStudents: 150,
+          subjects: generateSubjectsForDepartment(uploadedStudent.department).map(subject => ({
+            name: subject,
+            marks: Math.floor(Math.random() * 40 + 60)
+          }))
+        };
+      }),
+      subjects: generateSubjectsForDepartment(uploadedStudent.department).map(subject => ({
+        name: subject,
+        marks: Math.floor(Math.random() * 40 + 60),
+        average: Math.floor(Math.random() * 20 + 70)
+      })),
+      attendanceHistory: [
+        { month: 'Jan', attendance: Math.floor(Math.random() * 20 + 75) },
+        { month: 'Feb', attendance: Math.floor(Math.random() * 20 + 75) },
+        { month: 'Mar', attendance: Math.floor(Math.random() * 20 + 75) },
+        { month: 'Apr', attendance: Math.floor(Math.random() * 20 + 75) },
+        { month: 'May', attendance: uploadedStudent.attendance }
+      ],
+      strengths: getStrengthsForDepartment(uploadedStudent.department),
+      weaknesses: getWeaknessesForDepartment(uploadedStudent.department)
+    };
+  }
+
   // Parse the student ID to determine department and index
   const id = parseInt(studentId);
   const semesterNum = parseInt(semesterId);

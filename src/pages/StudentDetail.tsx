@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AreaChart, Area, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import Header from '@/components/Header';
 import { generateStudentDetail } from '@/lib/mock-data';
 
@@ -27,6 +27,31 @@ const StudentDetail = () => {
 
   const handleLogout = () => {
     navigate('/');
+  };
+
+  const handleDelete = () => {
+    if (window.confirm(`Are you sure you want to delete ${student?.name}? This action cannot be undone.`)) {
+      // Store deleted student ID in localStorage
+      const deletedStudents = JSON.parse(localStorage.getItem('deletedStudents') || '[]');
+      deletedStudents.push(studentId);
+      localStorage.setItem('deletedStudents', JSON.stringify(deletedStudents));
+      
+      toast.success(`${student?.name} has been deleted successfully`);
+      navigate(`/semester/${semId}`);
+    }
+  };
+
+  const handleEmail = () => {
+    if (student) {
+      const subject = `Student Report - ${student.name}`;
+      const body = `Student Report for ${student.name} (ID: ${student.id})%0D%0A%0D%0A` +
+        `Current GPA: ${student.gpa.toFixed(1)}/10.0%0D%0A` +
+        `Attendance: ${student.attendance}%%0D%0A` +
+        `Department: ${student.department}%0D%0A%0D%0A` +
+        `This is an automated report from BTech Student Analytics System.`;
+      
+      window.open(`mailto:?subject=${subject}&body=${body}`);
+    }
   };
 
   const handlePrint = () => {
@@ -193,17 +218,23 @@ const StudentDetail = () => {
           </div>
           
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="flex items-center">
+            <Button variant="outline" className="flex items-center" onClick={handleEmail}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              Email
+              Email Student
             </Button>
             <Button variant="outline" className="flex items-center" onClick={handlePrint}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
               Print Report
+            </Button>
+            <Button variant="destructive" className="flex items-center" onClick={handleDelete}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Delete Student
             </Button>
           </div>
         </div>
