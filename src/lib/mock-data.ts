@@ -1,196 +1,221 @@
-// Generate mock data for the student analytics dashboard
-
-// Helper function to generate a random number within a range
-const randomBetween = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+const names = {
+  cse: [
+    "Alice", "Bob", "Charlie", "David", "Eve", "Jona", "Kevin", "Liam", "Mia", "Noah",
+    "Olivia", "Owen", "Quinn", "Ryan", "Sophia", "Tyler", "Uma", "Victor", "Willow", "Xander",
+    "Yara", "Zack", "Ava", "Ben", "Chloe"
+  ],
+  ds: [
+    "Aarav", "Diya", "Ishaan", "Kavya", "Neil", "Priya", "Rohan", "Siya", "Tanvi", "Veer",
+    "Zara", "Aryan", "Myra", "Vivaan", "Anika", "Advik", "Ira", "Kabir", "Raina", "Shaurya",
+    "Aanya", "Dhruv", "Kiara", "Riyaan", "Shanaya"
+  ],
+  aiml: [
+    "Aaliyah", "Zayn", "Inaya", "Rayan", "Esha", "Vivaan", "Ayaan", "Kiara", "Armaan", "Saanvi",
+    "Reyansh", "Anaya", "Aarush", "Pari", "Arnav", "Aaradhya", "Ibrahim", "Aisha", "Zoya", "Omar",
+    "Alia", "Bilal", "Hina", "Imran", "Jasmine"
+  ],
+  civil: [
+    "Hazel", "Jasper", "Scarlett", "Finn", "Luna", "Atticus", "Aurora", "Silas", "Cora", "Leo",
+    "Violet", "Milo", "Elsie", "Theodore", "Ada", "Oscar", "Ivy", "Felix", "Maisie", "Arthur",
+    "Evelyn", "Henry", "Grace", "Owen", "Chloe"
+  ],
+  ise: [
+    "Hazel", "Jasper", "Scarlett", "Finn", "Luna", "Atticus", "Aurora", "Silas", "Cora", "Leo",
+    "Violet", "Milo", "Elsie", "Theodore", "Ada", "Oscar", "Ivy", "Felix", "Maisie", "Arthur",
+    "Evelyn", "Henry", "Grace", "Owen", "Chloe"
+  ],
+  admin: [
+    "Hazel", "Jasper", "Scarlett", "Finn", "Luna", "Atticus", "Aurora", "Silas", "Cora", "Leo",
+    "Violet", "Milo", "Elsie", "Theodore", "Ada", "Oscar", "Ivy", "Felix", "Maisie", "Arthur",
+    "Evelyn", "Henry", "Grace", "Owen", "Chloe"
+  ]
 };
 
-// Helper function to generate a random name
-const generateName = (): string => {
-  const firstNames = [
-    'Aditya', 'Aarav', 'Aryan', 'Vivaan', 'Vihaan', 
-    'Ananya', 'Diya', 'Saanvi', 'Aanya', 'Aadhya',
-    'Rohan', 'Rahul', 'Arjun', 'Ishaan', 'Dhruv',
-    'Neha', 'Priya', 'Riya', 'Nisha', 'Shreya',
-    'Vikram', 'Karan', 'Virat', 'Raj', 'Dev',
-    'Kavya', 'Anjali', 'Pooja', 'Meera', 'Aditi'
-  ];
-  
-  const lastNames = [
-    'Sharma', 'Patel', 'Singh', 'Kumar', 'Gupta', 
-    'Shah', 'Mehta', 'Verma', 'Joshi', 'Agarwal',
-    'Reddy', 'Nair', 'Iyer', 'Pillai', 'Menon',
-    'Das', 'Chatterjee', 'Banerjee', 'Mukherjee', 'Roy',
-    'Kapoor', 'Malhotra', 'Khanna', 'Bhatia', 'Chopra'
-  ];
-  
-  return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+const lastNames = [
+  "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
+  "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+  "Lee", "Perez", "Thompson", "White", "Hall"
+];
+
+const departmentNames = {
+  cse: [
+    "Alice", "Bob", "Charlie", "David", "Eve", "Jona", "Kevin", "Liam", "Mia", "Noah",
+    "Olivia", "Owen", "Quinn", "Ryan", "Sophia", "Tyler", "Uma", "Victor", "Willow", "Xander",
+    "Yara", "Zack", "Ava", "Ben", "Chloe"
+  ],
+  ds: [
+    "Aarav", "Diya", "Ishaan", "Kavya", "Neil", "Priya", "Rohan", "Siya", "Tanvi", "Veer",
+    "Zara", "Aryan", "Myra", "Vivaan", "Anika", "Advik", "Ira", "Kabir", "Raina", "Shaurya",
+    "Aanya", "Dhruv", "Kiara", "Riyaan", "Shanaya"
+  ],
+  aiml: [
+    "Aaliyah", "Zayn", "Inaya", "Rayan", "Esha", "Vivaan", "Ayaan", "Kiara", "Armaan", "Saanvi",
+    "Reyansh", "Anaya", "Aarush", "Pari", "Arnav", "Aaradhya", "Ibrahim", "Aisha", "Zoya", "Omar",
+    "Alia", "Bilal", "Hina", "Imran", "Jasmine"
+  ],
+  civil: [
+    "Hazel", "Jasper", "Scarlett", "Finn", "Luna", "Atticus", "Aurora", "Silas", "Cora", "Leo",
+    "Violet", "Milo", "Elsie", "Theodore", "Ada", "Oscar", "Ivy", "Felix", "Maisie", "Arthur",
+    "Evelyn", "Henry", "Grace", "Owen", "Chloe"
+  ],
+  ise: [
+    "Hazel", "Jasper", "Scarlett", "Finn", "Luna", "Atticus", "Aurora", "Silas", "Cora", "Leo",
+    "Violet", "Milo", "Elsie", "Theodore", "Ada", "Oscar", "Ivy", "Felix", "Maisie", "Arthur",
+    "Evelyn", "Henry", "Grace", "Owen", "Chloe"
+  ],
+  admin: [
+    "Hazel", "Jasper", "Scarlett", "Finn", "Luna", "Atticus", "Aurora", "Silas", "Cora", "Leo",
+    "Violet", "Milo", "Elsie", "Theodore", "Ada", "Oscar", "Ivy", "Felix", "Maisie", "Arthur",
+    "Evelyn", "Henry", "Grace", "Owen", "Chloe"
+  ]
 };
 
-// Generate a list of students for a semester
-export const generateMockStudents = (semesterId: string, department?: string): any[] => {
-  // First, check if there are manually added students for this semester and department
-  const storageKey = `students_${department}_sem${semesterId}`;
-  const storedStudents = JSON.parse(localStorage.getItem(storageKey) || '[]');
+export const generateMockStudents = (semesterId: string, department?: string) => {
+  const students: any[] = [];
+  const deptCode = department || 'cse';
   
-  const semNumber = parseInt(semesterId);
-  const studentCount = randomBetween(30, 50);
+  // Use semester and department to create consistent student IDs
+  const baseId = parseInt(semesterId) * 1000 + getDepartmentOffset(deptCode);
   
-  const mockStudents = Array.from({ length: studentCount }, (_, i) => {
-    const studentId = (semNumber * 1000) + (i + 1);
-    const gpa = 6 + (Math.random() * 4); // GPA between 6.0 and 10.0
-    const attendance = randomBetween(70, 98);
-    // Higher semester students generally have better improvement trends
-    const improvementBase = semNumber >= 4 ? 5 : 0;
-    const improvement = (Math.random() * 10) - 3 + improvementBase; // Between -3% and +7-12%
+  const names = departmentNames[deptCode as keyof typeof departmentNames] || departmentNames.cse;
+  
+  for (let i = 0; i < 25; i++) {
+    const nameIndex = i % names.length;
+    const lastName = lastNames[i % lastNames.length];
     
-    return {
-      id: studentId,
-      name: generateName(),
-      gpa,
-      attendance,
-      improvement
-    };
-  });
-  
-  // Combine stored students with mock students, ensuring no ID conflicts
-  const allStudents = [...storedStudents];
-  const usedIds = new Set(storedStudents.map((s: any) => s.id));
-  
-  mockStudents.forEach(student => {
-    if (!usedIds.has(student.id)) {
-      allStudents.push(student);
-    }
-  });
-  
-  return allStudents;
-};
-
-// Generate subjects for BTech curriculum
-const generateSubjects = (semesterId: string): any[] => {
-  // Different subjects based on semester
-  const subjectsBySem: Record<string, string[]> = {
-    '1': ['Mathematics I', 'Physics', 'Chemistry', 'Basic Electrical Eng.', 'Engineering Graphics'],
-    '2': ['Mathematics II', 'Basic Electronics', 'Programming Fundamentals', 'Engineering Mechanics', 'Environmental Science'],
-    '3': ['Data Structures', 'Digital Logic Design', 'Discrete Mathematics', 'Computer Organization', 'Object Oriented Programming'],
-    '4': ['Database Systems', 'Operating Systems', 'Theory of Computation', 'Computer Networks', 'Software Engineering'],
-    '5': ['Algorithm Design', 'Compiler Design', 'Computer Graphics', 'Artificial Intelligence', 'Web Technologies'],
-    '6': ['Machine Learning', 'Information Security', 'Cloud Computing', 'Mobile App Development', 'Elective I'],
-    '7': ['Distributed Systems', 'Big Data Analytics', 'Internet of Things', 'Elective II', 'Elective III'],
-    '8': ['Project Work', 'Industrial Training', 'Professional Ethics', 'Elective IV', 'Elective V']
-  };
-  
-  const subjects = subjectsBySem[semesterId] || subjectsBySem['1'];
-  
-  return subjects.map(name => {
-    const marks = randomBetween(60, 95);
-    return {
-      name,
-      marks,
-      average: marks - randomBetween(-5, 10) // Class average slightly lower
-    };
-  });
-};
-
-// Generate attendance history data
-const generateAttendanceHistory = (): any[] => {
-  return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map(month => {
-    return {
-      month,
-      attendance: randomBetween(75, 98)
-    };
-  });
-};
-
-// Generate semester history
-const generateSemesterHistory = (currSemId: string, studentGpa: number): any[] => {
-  const currSem = parseInt(currSemId);
-  const semesters = [];
-  
-  // Generate history for all previous semesters
-  for (let i = 1; i <= currSem; i++) {
-    // For current semester, use the student's actual GPA
-    // For previous semesters, generate slightly lower GPAs to show improvement trend
-    let semGpa = i === currSem ? studentGpa : studentGpa - (0.1 * (currSem - i)) - (Math.random() * 0.3);
-    semGpa = Math.max(6.0, Math.min(10.0, semGpa)); // Keep GPA between 6 and 10
-    
-    semesters.push({
-      name: `Semester ${i}`,
-      gpa: semGpa,
-      attendance: randomBetween(75, 95),
-      rank: randomBetween(1, 40),
-      totalStudents: randomBetween(40, 50),
-      subjects: generateSubjects(i.toString()).map(s => {
-        return {
-          name: s.name,
-          marks: s.marks
-        };
-      })
+    students.push({
+      id: baseId + i + 1, // Consistent ID generation
+      name: `${names[nameIndex]} ${lastName}`,
+      gpa: parseFloat((Math.random() * 3 + 7).toFixed(1)),
+      attendance: Math.floor(Math.random() * 30 + 70),
+      improvement: parseFloat((Math.random() * 10 - 5).toFixed(1)),
+      semester: semesterId,
+      department: deptCode
     });
   }
   
-  return semesters;
+  return students;
 };
 
-// Generate strengths and weaknesses
-const generateStrengthsWeaknesses = (subjects: any[]): { strengths: string[], weaknesses: string[] } => {
-  // Sort subjects by marks
-  const sortedSubjects = [...subjects].sort((a, b) => b.marks - a.marks);
-  
-  // Top 2 subjects are strengths
-  const strengths = sortedSubjects.slice(0, 2).map(s => `Strong performance in ${s.name} (${s.marks}%)`);
-  strengths.push(
-    Math.random() > 0.5 ? 'Consistent attendance record' : 'Good class participation',
-    Math.random() > 0.5 ? 'Excellent project work' : 'Strong practical skills'
-  );
-  
-  // Bottom 2 subjects are weaknesses
-  const weaknesses = sortedSubjects.slice(-2).map(s => `Needs improvement in ${s.name} (${s.marks}%)`);
-  weaknesses.push(
-    Math.random() > 0.5 ? 'Could benefit from more practical applications' : 'Should focus on conceptual understanding',
-    Math.random() > 0.5 ? 'More consistent study habits recommended' : 'Consider additional practice exercises'
-  );
-  
-  return { strengths, weaknesses };
-};
-
-// Generate detailed student data
-export const generateStudentDetail = (semesterId: string, studentId: string): any => {
-  const semNumber = parseInt(semesterId);
-  const id = parseInt(studentId);
-  
-  // Generate base student data
-  const gpa = 6 + (Math.random() * 4); // GPA between 6.0 and 10.0
-  const attendance = randomBetween(70, 98);
-  const improvement = (Math.random() * 10) - 3 + (semNumber >= 4 ? 5 : 0);
-  
-  // Generate subjects
-  const subjects = generateSubjects(semesterId);
-  
-  // Generate attendance history
-  const attendanceHistory = generateAttendanceHistory();
-  
-  // Generate semester history
-  const semesterHistory = generateSemesterHistory(semesterId, gpa);
-  
-  // Generate strengths and weaknesses
-  const { strengths, weaknesses } = generateStrengthsWeaknesses(subjects);
-  
-  return {
-    id,
-    name: generateName(),
-    gpa,
-    attendance,
-    improvement,
-    subjects,
-    attendanceHistory,
-    semesterHistory,
-    strengths,
-    weaknesses
+// Helper function to get department offset for consistent IDs
+const getDepartmentOffset = (department: string): number => {
+  const offsets: { [key: string]: number } = {
+    'cse': 100,
+    'ds': 200,
+    'aiml': 300,
+    'civil': 400,
+    'ise': 500,
+    'admin': 600
   };
+  return offsets[department] || 100;
 };
 
-export default {
-  generateMockStudents,
-  generateStudentDetail
+export const generateStudentDetail = (semesterId: string, studentId: string) => {
+  // Parse the student ID to determine department and index
+  const id = parseInt(studentId);
+  const semesterNum = parseInt(semesterId);
+  const baseId = semesterNum * 1000;
+  const studentIndex = id - baseId - 1;
+  
+  // Determine department from ID range
+  let department = 'cse';
+  const idOffset = id % 1000;
+  if (idOffset >= 600) department = 'admin';
+  else if (idOffset >= 500) department = 'ise';
+  else if (idOffset >= 400) department = 'civil';
+  else if (idOffset >= 300) department = 'aiml';
+  else if (idOffset >= 200) department = 'ds';
+  else if (idOffset >= 100) department = 'cse';
+  
+  const deptNames = departmentNames[department as keyof typeof departmentNames] || departmentNames.cse;
+  const nameIndex = Math.abs(studentIndex) % deptNames.length;
+  const lastNameIndex = Math.abs(studentIndex) % lastNames.length;
+  const studentName = `${deptNames[nameIndex]} ${lastNames[lastNameIndex]}`;
+  
+  const currentGPA = parseFloat((Math.random() * 3 + 7).toFixed(1));
+  const currentAttendance = Math.floor(Math.random() * 30 + 70);
+  
+  const student = {
+    id: id,
+    name: studentName,
+    gpa: currentGPA,
+    attendance: currentAttendance,
+    improvement: parseFloat((Math.random() * 10 - 5).toFixed(1)),
+    department: department,
+    
+    // Generate semester history
+    semesterHistory: Array.from({ length: semesterNum }, (_, i) => {
+      const semNum = i + 1;
+      const gpa = parseFloat((Math.random() * 3 + 6.5).toFixed(1));
+      return {
+        name: `Semester ${semNum}`,
+        gpa: gpa,
+        attendance: Math.floor(Math.random() * 20 + 75),
+        rank: Math.floor(Math.random() * 50 + 1),
+        totalStudents: 150,
+        subjects: generateSubjectsForDepartment(department).map(subject => ({
+          name: subject,
+          marks: Math.floor(Math.random() * 40 + 60)
+        }))
+      };
+    }),
+    
+    // Generate current semester subjects
+    subjects: generateSubjectsForDepartment(department).map(subject => ({
+      name: subject,
+      marks: Math.floor(Math.random() * 40 + 60),
+      average: Math.floor(Math.random() * 20 + 70)
+    })),
+    
+    // Generate attendance history
+    attendanceHistory: [
+      { month: 'Jan', attendance: Math.floor(Math.random() * 20 + 75) },
+      { month: 'Feb', attendance: Math.floor(Math.random() * 20 + 75) },
+      { month: 'Mar', attendance: Math.floor(Math.random() * 20 + 75) },
+      { month: 'Apr', attendance: Math.floor(Math.random() * 20 + 75) },
+      { month: 'May', attendance: currentAttendance }
+    ],
+    
+    strengths: getStrengthsForDepartment(department),
+    weaknesses: getWeaknessesForDepartment(department)
+  };
+  
+  return student;
+};
+
+// Helper functions for department-specific data
+const generateSubjectsForDepartment = (department: string): string[] => {
+  const subjects: { [key: string]: string[] } = {
+    cse: ['Data Structures', 'Algorithms', 'Database Systems', 'Computer Networks', 'Software Engineering'],
+    ds: ['Statistics', 'Machine Learning', 'Data Mining', 'Python Programming', 'Data Visualization'],
+    aiml: ['Neural Networks', 'Deep Learning', 'Computer Vision', 'NLP', 'Reinforcement Learning'],
+    civil: ['Structural Engineering', 'Concrete Technology', 'Surveying', 'Transportation', 'Geotechnical'],
+    ise: ['System Analysis', 'Web Technologies', 'Mobile Computing', 'Cloud Computing', 'Cybersecurity'],
+    admin: ['Management', 'Finance', 'Marketing', 'Operations', 'Strategy']
+  };
+  return subjects[department] || subjects.cse;
+};
+
+const getStrengthsForDepartment = (department: string): string[] => {
+  const strengths: { [key: string]: string[] } = {
+    cse: ['Problem Solving', 'Programming Logic', 'Algorithm Design'],
+    ds: ['Statistical Analysis', 'Data Interpretation', 'Mathematical Modeling'],
+    aiml: ['Pattern Recognition', 'Model Implementation', 'Research Skills'],
+    civil: ['Technical Drawing', 'Project Management', 'Field Work'],
+    ise: ['System Design', 'User Experience', 'Technical Documentation'],
+    admin: ['Leadership', 'Communication', 'Strategic Thinking']
+  };
+  return strengths[department] || strengths.cse;
+};
+
+const getWeaknessesForDepartment = (department: string): string[] => {
+  const weaknesses: { [key: string]: string[] } = {
+    cse: ['Code Optimization', 'Documentation', 'Testing'],
+    ds: ['Data Cleaning', 'Visualization', 'Presentation'],
+    aiml: ['Feature Engineering', 'Model Tuning', 'Deployment'],
+    civil: ['CAD Software', 'Cost Estimation', 'Environmental Impact'],
+    ise: ['Database Design', 'Security Implementation', 'Performance Optimization'],
+    admin: ['Data Analysis', 'Digital Tools', 'Process Automation']
+  };
+  return weaknesses[department] || weaknesses.cse;
 };

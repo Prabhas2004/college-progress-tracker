@@ -14,7 +14,7 @@ const departmentCredentials = {
   aiml: { id: 'aiml', password: 'aimlpass' },
   civil: { id: 'civil', password: 'civilpass' },
   ise: { id: 'ise', password: 'isepass' },
-  admin: { id: 'admin', password: 'password' }, // Keep admin for testing
+  admin: { id: 'admin', password: 'password' },
 };
 
 // Department display names
@@ -157,13 +157,6 @@ const Login = () => {
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col">
-          <div className="text-center text-sm text-gray-500 mt-2">
-            <p>Demo credentials for departments:</p>
-            <p>CSE: cse/csepass | DS: ds/dspass | AIML: aiml/aimlpass</p>
-            <p>Civil: civil/civilpass | ISE: ise/isepass | Admin: admin/password</p>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );
